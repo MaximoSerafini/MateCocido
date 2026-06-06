@@ -1,0 +1,32 @@
+// Detector de números primos en Mate Cocido.
+// Verifica si un número es primo probando divisores hasta su raíz cuadrada.
+// Como no hay 'break', cortamos el bucle usando la condición 'y esPrimo'.
+mate Cocido {
+    arrancar() {
+        cebar entero n = 287;          // número a analizar
+        cebar bool esPrimo = posta;   // arrancamos asumiendo que sí lo es
+        cebar entero i = 2;           // primer divisor a probar
+
+        si (n < 2) {
+            esPrimo = trucho;         // 0 y 1 no son primos
+        }
+
+        // Probamos divisores desde 2 mientras i*i <= n (o sea, i <= raíz de n).
+        // El 'y esPrimo' hace que el bucle corte apenas encontramos un divisor.
+        mientras (i * i <= n y esPrimo) {
+            si (n % i == 0) {
+                esPrimo = trucho;     // n se divide por i: no es primo
+            }
+            i = i + 1;
+        }
+
+        che("Analizando el numero:");
+        che(n);
+
+        si (esPrimo) {
+            che("Es primo, posta");
+        } sino {
+            che("No es primo, trucho");
+        }
+    }
+}

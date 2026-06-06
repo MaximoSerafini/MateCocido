@@ -16,3 +16,8 @@ Thumbs.db
 
 # Salidas
 *.log
+
+# Documento de trabajo (no se versiona; es borrador local)
+docs/informe.md
+docs/informe.rar
+*.rar
