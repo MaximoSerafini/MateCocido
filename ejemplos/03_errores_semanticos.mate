@@ -1,0 +1,19 @@
+// Este programa es léxica y sintácticamente válido, pero tiene errores
+// SEMÁNTICOS que solo la Fase 3 puede detectar.
+mate Cocido {
+    arrancar() {
+        cebar entero edad = 18;
+        cebar entero edad = 20;          // error: redeclaración en el mismo ámbito
+
+        nombre = "Maximo";               // error: variable no declarada
+
+        cebar bool mayor = edad + 5;     // error: asignar 'entero' a 'bool'
+
+        si (edad + 1) {                  // error: la condición no es 'bool'
+            che("nunca");
+        }
+
+        cebar palabra texto = "hola";
+        cebar entero suma = texto * 3;   // error: 'palabra' * 'entero'
+    }
+}

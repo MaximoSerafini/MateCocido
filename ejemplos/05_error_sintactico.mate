@@ -1,0 +1,7 @@
+// Falta el ';' al final de la declaración: error sintáctico.
+mate Cocido {
+    arrancar() {
+        cebar entero plata = 100
+        che(plata);
+    }
+}

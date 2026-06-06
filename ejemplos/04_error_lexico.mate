@@ -1,0 +1,6 @@
+// El carácter '@' no pertenece al alfabeto de Mate Cocido: error léxico.
+mate Cocido {
+    arrancar() {
+        cebar entero plata = 100 @ 5;
+    }
+}

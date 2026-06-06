@@ -1,0 +1,18 @@
+// Demuestra condicionales, bucle y precedencia de operadores
+mate Cocido {
+    arrancar() {
+        cebar entero edad = 18;
+
+        si (edad >= 18 y edad < 100) {
+            che("Cebá unos mates, maestro");
+        } sino {
+            che("Todavía tomás la leche");
+        }
+
+        cebar entero i = 0;
+        mientras (i < 3) {
+            che(i);
+            i = i + 1;
+        }
+    }
+}

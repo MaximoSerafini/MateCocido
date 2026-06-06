@@ -1,0 +1,7 @@
+// Programa de bienvenida en Mate Cocido
+mate Cocido {
+    arrancar() {
+        cebar palabra saludo = "Cebá unos mates, maestro";
+        che(saludo);
+    }
+}
