@@ -46,3 +46,9 @@ class ErrorSemantico(ErrorCompilacion):
     """Programa bien formado pero con significado inválido (tipos, ámbitos)."""
 
     fase = "semántico"
+
+
+class ErrorEjecucion(ErrorCompilacion):
+    """Error que solo aparece al ejecutar el programa (p. ej. división por cero)."""
+
+    fase = "ejecución"

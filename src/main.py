@@ -1,18 +1,20 @@
 """
 Compilador de Mate Cocido — interfaz de línea de comandos.
 
-Orquesta las tres fases del compilador sobre un archivo `.mate`:
+Orquesta las fases del compilador sobre un archivo `.mate` y luego lo ejecuta:
 
     Fase 1  Léxico     fuente  -> tokens
     Fase 2  Sintáctico tokens  -> AST
     Fase 3  Semántico  AST     -> tabla de símbolos (validada)
+    Fase 4  Intérprete AST     -> ejecución (lo que imprime `che`)
 
 Uso:
-    python src/main.py <archivo.mate>            # compila y muestra el resumen
-    python src/main.py <archivo.mate> --tokens   # además muestra los tokens
-    python src/main.py <archivo.mate> --ast      # además muestra el AST
-    python src/main.py <archivo.mate> --tabla    # además muestra la tabla de símbolos
-    python src/main.py <archivo.mate> --todo     # muestra todo el detalle
+    python src/main.py <archivo.mate>             # compila y ejecuta
+    python src/main.py <archivo.mate> --tokens    # además muestra los tokens
+    python src/main.py <archivo.mate> --ast       # además muestra el AST
+    python src/main.py <archivo.mate> --tabla     # además muestra la tabla de símbolos
+    python src/main.py <archivo.mate> --todo      # muestra todo el detalle
+    python src/main.py <archivo.mate> --no-correr # solo valida, sin ejecutar
 """
 
 from __future__ import annotations
@@ -26,6 +28,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from matecocido import imprimir
 from matecocido.errores import ErrorCompilacion
+from matecocido.interprete import ejecutar
 from matecocido.lexer import tokenizar
 from matecocido.parser import parsear
 from matecocido.semantic import analizar
@@ -45,8 +48,8 @@ def _titulo(texto: str) -> str:
 
 
 def compilar(ruta: Path, mostrar_tokens: bool, mostrar_ast: bool,
-             mostrar_tabla: bool) -> int:
-    """Ejecuta las tres fases. Devuelve un código de salida (0 = OK)."""
+             mostrar_tabla: bool, correr: bool) -> int:
+    """Ejecuta las fases del compilador (y opcionalmente el programa). 0 = OK."""
     fuente = ruta.read_text(encoding="utf-8")
     print(f"Compilando: {ruta.name}")
 
@@ -73,13 +76,26 @@ def compilar(ruta: Path, mostrar_tokens: bool, mostrar_ast: bool,
             print(_titulo("TABLA DE SÍMBOLOS"))
             print(imprimir.formatear_tabla(tabla))
 
+        # ---- Fase 4: Ejecución ----
+        if correr:
+            salida = ejecutar(arbol)
+            print(_titulo("SALIDA DEL PROGRAMA"))
+            if salida:
+                for linea in salida:
+                    print(linea)
+            else:
+                print("(el programa no imprimió nada)")
+
     except ErrorCompilacion as e:
         print()
         print(e.formatear())
-        print("\n✘ La compilación falló.")
+        print("\n✘ Falló la compilación o la ejecución.")
         return 1
 
-    print(f"\n✔ ¡Listo el pomo! '{ruta.name}' compiló sin errores.")
+    if correr:
+        print(f"\n✔ ¡Listo el pomo! '{ruta.name}' compiló y se ejecutó sin errores.")
+    else:
+        print(f"\n✔ ¡Listo el pomo! '{ruta.name}' compiló sin errores.")
     return 0
 
 
@@ -93,6 +109,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--ast", action="store_true", help="mostrar el AST (Fase 2)")
     parser.add_argument("--tabla", action="store_true", help="mostrar la tabla de símbolos (Fase 3)")
     parser.add_argument("--todo", action="store_true", help="mostrar tokens, AST y tabla")
+    parser.add_argument("--no-correr", action="store_true",
+                        help="solo validar (no ejecutar el programa)")
     args = parser.parse_args(argv)
 
     if not args.archivo.exists():
@@ -104,6 +122,7 @@ def main(argv: list[str] | None = None) -> int:
         mostrar_tokens=args.tokens or args.todo,
         mostrar_ast=args.ast or args.todo,
         mostrar_tabla=args.tabla or args.todo,
+        correr=not args.no_correr,
     )
 
 

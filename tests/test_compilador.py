@@ -16,7 +16,9 @@ RAIZ = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(RAIZ / "src"))
 
 from matecocido import ast_nodes as ast
-from matecocido.errores import ErrorLexico, ErrorSemantico, ErrorSintactico
+from matecocido.errores import (ErrorEjecucion, ErrorLexico, ErrorSemantico,
+                                ErrorSintactico)
+from matecocido.interprete import ejecutar
 from matecocido.lexer import tokenizar
 from matecocido.parser import parsear
 from matecocido.semantic import analizar
@@ -28,6 +30,13 @@ def compilar(fuente: str):
     arbol = parsear(tokenizar(fuente))
     tabla = analizar(arbol)
     return arbol, tabla
+
+
+def correr(fuente: str) -> list[str]:
+    """Atajo: compila y ejecuta, devolviendo lo que el programa imprime."""
+    arbol = parsear(tokenizar(fuente))
+    analizar(arbol)
+    return ejecutar(arbol)
 
 
 PROGRAMA_MINIMO = """
@@ -227,6 +236,56 @@ class TestSemantico(unittest.TestCase):
 
 
 # ====================================================================== #
+# Fase 4 — Intérprete (ejecución)
+# ====================================================================== #
+class TestInterprete(unittest.TestCase):
+
+    def test_che_imprime(self):
+        self.assertEqual(correr(envolver('che("hola");')), ["hola"])
+
+    def test_aritmetica_entera(self):
+        self.assertEqual(correr(envolver("che(2 + 3 * 4);")), ["14"])
+
+    def test_division_entera_trunca(self):
+        self.assertEqual(correr(envolver("che(7 / 2);")), ["3"])
+
+    def test_division_flotante(self):
+        self.assertEqual(correr(envolver("che(7.0 / 2);")), ["3.5"])
+
+    def test_modulo(self):
+        self.assertEqual(correr(envolver("che(7 % 3);")), ["1"])
+
+    def test_booleano_se_muestra_como_palabra(self):
+        self.assertEqual(correr(envolver("che(3 > 2);")), ["posta"])
+        self.assertEqual(correr(envolver("che(3 < 2);")), ["trucho"])
+
+    def test_concatenacion(self):
+        self.assertEqual(correr(envolver('che("ce" + "bar");')), ["cebar"])
+
+    def test_si_toma_la_rama_correcta(self):
+        prog = "cebar entero x = 10; si (x > 5) { che(\"grande\"); } sino { che(\"chico\"); }"
+        self.assertEqual(correr(envolver(prog)), ["grande"])
+
+    def test_mientras_cuenta(self):
+        prog = "cebar entero i = 0; mientras (i < 3) { che(i); i = i + 1; }"
+        self.assertEqual(correr(envolver(prog)), ["0", "1", "2"])
+
+    def test_factorial(self):
+        prog = ("cebar entero n = 5; cebar entero f = 1; cebar entero i = 1; "
+                "mientras (i <= n) { f = f * i; i = i + 1; } che(f);")
+        self.assertEqual(correr(envolver(prog)), ["120"])
+
+    def test_logicos_con_cortocircuito(self):
+        self.assertEqual(correr(envolver("che(posta y trucho);")), ["trucho"])
+        self.assertEqual(correr(envolver("che(trucho o posta);")), ["posta"])
+        self.assertEqual(correr(envolver("che(no trucho);")), ["posta"])
+
+    def test_division_por_cero(self):
+        with self.assertRaises(ErrorEjecucion):
+            correr(envolver("che(5 / 0);"))
+
+
+# ====================================================================== #
 # Integración sobre los archivos de ejemplo
 # ====================================================================== #
 class TestEjemplos(unittest.TestCase):
@@ -239,6 +298,10 @@ class TestEjemplos(unittest.TestCase):
         for nombre in ("01_hola.mate", "02_mayoria.mate"):
             with self.subTest(ejemplo=nombre):
                 compilar(self._fuente(nombre))
+
+    def test_ejemplo_factorial_ejecuta(self):
+        salida = correr(self._fuente("06_factorial.mate"))
+        self.assertEqual(salida[-1], "120")
 
     def test_ejemplo_error_lexico(self):
         with self.assertRaises(ErrorLexico):
