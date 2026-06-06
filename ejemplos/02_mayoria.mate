@@ -9,7 +9,7 @@ mate Cocido {
             che("Todavía tomás la leche");
         }
 
-        cebar entero i = 0;
+        cebar entero i = 1;
         mientras (i < 3) {
             che(i);
             i = i + 1;

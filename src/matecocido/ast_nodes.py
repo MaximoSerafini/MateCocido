@@ -75,7 +75,7 @@ class Che(Nodo):
 
 @dataclass
 class Devolver(Nodo):
-    """`devolver [<expresion>];`"""
+    """`dame [<expresion>];`"""
     expresion: Nodo | None
 
 

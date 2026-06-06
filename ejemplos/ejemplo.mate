@@ -1,0 +1,15 @@
+mate Cocido {
+      arrancar() {
+          cebar palabra nombre = "Maximo";
+          cebar entero edad = 5;
+
+          che("Hola Nico y Uriel");
+          che(nombre);
+
+          si (edad >= 18) {
+              che("Sos mayor, cebá unos mates");
+          } sino {
+              che("Tomás la leche todavía");
+          }
+      }
+  }

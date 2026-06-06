@@ -84,7 +84,7 @@ mate Cocido {
 | `si` / `sino` | `if` / `else` | condicional |
 | `mientras` | `while` | bucle |
 | `che(...)` | `System.out.println` | salida |
-| `devolver` | `return` | retorno |
+| `dame` | `return` | retorno |
 | `y` `o` `no` | `&&` `\|\|` `!` | operadores lógicos |
 
 La **gramática formal completa (EBNF)** está en [`docs/gramatica.md`](docs/gramatica.md).

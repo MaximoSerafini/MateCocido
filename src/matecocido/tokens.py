@@ -29,7 +29,7 @@ class TipoToken(Enum):
     SINO = auto()        # sino
     MIENTRAS = auto()    # mientras
     CHE = auto()         # che
-    DEVOLVER = auto()    # devolver
+    DEVOLVER = auto()    # dame
 
     # Tipos
     TIPO_ENTERO = auto()    # entero
@@ -85,7 +85,7 @@ PALABRAS_RESERVADAS: dict[str, TipoToken] = {
     "sino": TipoToken.SINO,
     "mientras": TipoToken.MIENTRAS,
     "che": TipoToken.CHE,
-    "devolver": TipoToken.DEVOLVER,
+    "dame": TipoToken.DEVOLVER,
     "entero": TipoToken.TIPO_ENTERO,
     "flota": TipoToken.TIPO_FLOTA,
     "palabra": TipoToken.TIPO_PALABRA,

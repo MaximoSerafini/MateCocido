@@ -52,7 +52,7 @@ sentencia     = declaracion
               | sent_si
               | sent_mientras
               | sent_che
-              | sent_devolver ;
+              | sent_dame ;
 
 declaracion   = "cebar" tipo IDENT [ "=" expresion ] ";" ;
 
@@ -64,7 +64,7 @@ sent_mientras = "mientras" "(" expresion ")" bloque ;
 
 sent_che      = "che" "(" expresion ")" ";" ;
 
-sent_devolver = "devolver" [ expresion ] ";" ;
+sent_dame     = "dame" [ expresion ] ";" ;
 ```
 
 ---
@@ -137,7 +137,7 @@ IDENT      = [a-zA-Z_][a-zA-Z0-9_]*
 
 ### Palabras reservadas
 
-`mate`, `arrancar`, `cebar`, `si`, `sino`, `mientras`, `che`, `devolver`,
+`mate`, `arrancar`, `cebar`, `si`, `sino`, `mientras`, `che`, `dame`,
 `entero`, `flota`, `palabra`, `bool`, `posta`, `trucho`, `y`, `o`, `no`.
 
 > Las palabras reservadas tienen prioridad sobre `IDENT`: una secuencia que

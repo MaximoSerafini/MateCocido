@@ -2,7 +2,7 @@
 // Demuestra la EJECUCIÓN real: che(...) imprime los resultados.
 mate Cocido {
     arrancar() {
-        cebar entero n = 5;
+        cebar entero n = 10;
         cebar entero factorial = 1;
         cebar entero i = 1;
 
@@ -15,5 +15,7 @@ mate Cocido {
         che(n);
         che("es:");
         che(factorial);
+
+        che("que onda");
     }
 }

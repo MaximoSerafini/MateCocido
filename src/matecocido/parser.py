@@ -163,12 +163,12 @@ class Parser:
         return ast.Che(expr, linea=ini.linea, columna=ini.columna)
 
     def _sent_devolver(self) -> ast.Devolver:
-        """sent_devolver = 'devolver' [ expresion ] ';'"""
-        ini = self._avanzar()  # 'devolver'
+        """sent_dame = 'dame' [ expresion ] ';'"""
+        ini = self._avanzar()  # 'dame'
         expr: ast.Nodo | None = None
         if not self._verificar(TipoToken.PUNTO_COMA):
             expr = self._expresion()
-        self._esperar(TipoToken.PUNTO_COMA, "';' al final de 'devolver'")
+        self._esperar(TipoToken.PUNTO_COMA, "';' al final de 'dame'")
         return ast.Devolver(expr, linea=ini.linea, columna=ini.columna)
 
     # ------------------------------------------------------------------ #

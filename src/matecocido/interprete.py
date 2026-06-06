@@ -21,7 +21,7 @@ from .errores import ErrorEjecucion
 
 
 class _Retorno(Exception):
-    """Señal interna para implementar `devolver` (corta la ejecución)."""
+    """Señal interna para implementar `dame` (corta la ejecución)."""
 
     def __init__(self, valor: object):
         self.valor = valor
@@ -77,7 +77,7 @@ class Interprete:
             for sentencia in programa.cuerpo:
                 self._sentencia(sentencia)
         except _Retorno:
-            pass  # `devolver` en el cuerpo principal simplemente termina
+            pass  # `dame` en el cuerpo principal simplemente termina
         return self.salida
 
     # ------------------------------------------------------------------ #
