@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/logo.png" alt="Logo Mate Cocido" width="220">
+  <img src="docs/banner.jpg" alt="Mate Cocido — Compilador" width="100%">
 </p>
 
 <h1 align="center">🧉 Mate Cocido — Compilador</h1>
