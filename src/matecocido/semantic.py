@@ -41,6 +41,10 @@ class TablaSimbolos:
 
     def __init__(self):
         self.ambitos: list[dict[str, Simbolo]] = [{}]
+        # Registro permanente de TODO lo declarado, en orden. Los ámbitos se
+        # van cerrando (pop) a medida que termina cada bloque, así que no
+        # sirven para reconstruir la tabla al final: para eso está esta lista.
+        self.declarados: list[Simbolo] = []
 
     def abrir_ambito(self) -> None:
         self.ambitos.append({})
@@ -54,6 +58,7 @@ class TablaSimbolos:
         if simbolo.nombre in actual:
             return False
         actual[simbolo.nombre] = simbolo
+        self.declarados.append(simbolo)
         return True
 
     def buscar(self, nombre: str) -> Simbolo | None:
@@ -64,11 +69,12 @@ class TablaSimbolos:
         return None
 
     def aplanar(self) -> list[Simbolo]:
-        """Todos los símbolos declarados (para mostrar la tabla al usuario)."""
-        out: list[Simbolo] = []
-        for ambito in self.ambitos:
-            out.extend(ambito.values())
-        return out
+        """Todos los símbolos declarados (para mostrar la tabla al usuario).
+
+        Incluye los de ámbitos ya cerrados (variables locales de `si`/
+        `mientras`), que de otro modo se perderían al hacer pop del ámbito.
+        """
+        return list(self.declarados)
 
 
 # Reglas de tipos para operadores binarios.

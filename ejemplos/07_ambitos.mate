@@ -1,0 +1,25 @@
+// Demuestra los ÁMBITOS anidados y la tabla de símbolos.
+// Cada bloque (si / mientras) abre su propio ámbito: las variables locales
+// viven solo adentro, pero igual aparecen en la tabla (--tabla).
+mate Cocido {
+    arrancar() {
+        cebar entero total = 0;
+
+        cebar entero i = 1;
+        mientras (i <= 3) {
+            cebar entero cuadrado = i * i;   // local del 'mientras'
+            total = total + cuadrado;
+            i = i + 1;
+        }
+
+        si (total > 10) {
+            cebar palabra mensaje = "pasa los 10";   // local del 'si'
+            che(mensaje);
+        } sino {
+            che("no llega a 10");
+        }
+
+        che("suma de cuadrados:");
+        che(total);
+    }
+}

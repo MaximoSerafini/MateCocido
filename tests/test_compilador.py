@@ -234,6 +234,15 @@ class TestSemantico(unittest.TestCase):
         with self.assertRaises(ErrorSemantico):
             compilar(envolver("cebar entero x; che(x);"))
 
+    def test_tabla_incluye_variables_de_ambitos_anidados(self):
+        # Las variables locales de un bloque (si/mientras) deben figurar en la
+        # tabla aunque su ámbito ya se haya cerrado al terminar el análisis.
+        _, tabla = compilar(envolver(
+            "cebar entero x = 1; "
+            "mientras (x < 3) { cebar entero adentro = x * 2; x = x + 1; }"))
+        nombres = {s.nombre for s in tabla.aplanar()}
+        self.assertEqual(nombres, {"x", "adentro"})
+
 
 # ====================================================================== #
 # Fase 4 — Intérprete (ejecución)
@@ -295,7 +304,7 @@ class TestEjemplos(unittest.TestCase):
         return (self.EJEMPLOS / nombre).read_text(encoding="utf-8")
 
     def test_ejemplos_validos_compilan(self):
-        for nombre in ("01_hola.mate", "02_mayoria.mate"):
+        for nombre in ("01_hola.mate", "02_mayoria.mate", "07_ambitos.mate"):
             with self.subTest(ejemplo=nombre):
                 compilar(self._fuente(nombre))
 
